@@ -1,0 +1,15 @@
+# 빌드 산출물
+bin/
+obj/
+dist/
+.vs/
+*.user
+
+# 명단·예제 데이터 (개인정보가 실수로 올라가지 않도록)
+*.xlsx
+*.xls
+*.csv
+sample/
+
+# 내부 계획 문서
+PLAN.md

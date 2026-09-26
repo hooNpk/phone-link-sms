@@ -1,0 +1,41 @@
+<Window x:Class="PhoneLinkSmsApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="단체문자발송" Height="820" Width="1120" MinWidth="900" MinHeight="660"
+        Icon="pack://application:,,,/PhoneLinkSms;component/Assets/app.ico"
+        WindowStartupLocation="CenterScreen" FontFamily="Malgun Gothic" FontSize="14"
+        Foreground="{StaticResource TextBrush}" Background="{StaticResource PageBrush}"
+        Closing="OnClosing">
+    <DockPanel>
+        <!-- 상단: 앱 이름 + 진행 단계 -->
+        <Border DockPanel.Dock="Top" Background="White" BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1" Padding="24,14">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,32,0">
+                    <Image Source="pack://application:,,,/PhoneLinkSms;component/Assets/app.ico" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="단체문자발송" FontSize="17" FontWeight="Bold" VerticalAlignment="Center"/>
+                </StackPanel>
+                <!-- 어느 단계에서든 발송 기록(로그 폴더)을 열 수 있게 항상 보이는 자리에 둔다 -->
+                <Button DockPanel.Dock="Right" Margin="24,0,0,0" Padding="12,6" FontWeight="Normal" VerticalAlignment="Center"
+                        Click="OnOpenLogs" ToolTip="지금까지 보낸 기록(성공·실패 목록, 실패 순간의 화면 캡처)이 담긴 폴더를 엽니다. 가장 최근 기록이 선택된 상태로 열립니다.">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📁" FontFamily="Segoe UI Emoji" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="발송 기록" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <StackPanel x:Name="Stepper" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </DockPanel>
+        </Border>
+
+        <!-- 하단: 이전 / 안내 / 다음 -->
+        <Border DockPanel.Dock="Bottom" Background="White" BorderBrush="{StaticResource LineBrush}" BorderThickness="0,1,0,0" Padding="24,12">
+            <DockPanel>
+                <Button x:Name="BackButton" DockPanel.Dock="Left" Content="◀  이전" Click="OnBack"/>
+                <Button x:Name="NextButton" DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Click="OnNext"/>
+                <TextBlock x:Name="FooterHint" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="16,0"
+                           TextWrapping="Wrap" TextAlignment="Right" Foreground="{StaticResource MutedBrush}"/>
+            </DockPanel>
+        </Border>
+
+        <ContentControl x:Name="Host" Focusable="False"/>
+    </DockPanel>
+</Window>

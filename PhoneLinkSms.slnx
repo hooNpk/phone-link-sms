@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="PhoneLinkSmsApp.Tests/PhoneLinkSmsApp.Tests.csproj" />
+  <Project Path="PhoneLinkSmsApp/PhoneLinkSmsApp.csproj" />
+</Solution>

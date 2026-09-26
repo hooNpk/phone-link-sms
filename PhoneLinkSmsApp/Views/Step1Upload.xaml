@@ -1,0 +1,199 @@
+<UserControl x:Class="PhoneLinkSmsApp.Views.Step1Upload"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop" Background="Transparent">
+  <Grid>
+    <DockPanel Margin="28,22">
+        <StackPanel DockPanel.Dock="Top">
+            <TextBlock Style="{StaticResource StepTitle}" Text="누구에게 보낼까요?"/>
+            <TextBlock Style="{StaticResource StepDesc}"
+                       Text="당원 명단 엑셀 파일을 불러오면 이름·전화번호·수신여부를 자동으로 찾아 발송 대상을 정리합니다."/>
+        </StackPanel>
+
+        <!-- ── 파일을 불러오기 전: 큰 끌어놓기 영역 ── -->
+        <Border x:Name="DropZone" DockPanel.Dock="Top" CornerRadius="12" Background="White" Padding="24,36"
+                BorderThickness="2" Cursor="Hand" MouseLeftButtonUp="OnDropZoneClick">
+            <Border.BorderBrush>
+                <DrawingBrush Viewport="0,0,12,12" ViewportUnits="Absolute" TileMode="Tile">
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <GeometryDrawing Brush="#93C5FD">
+                                <GeometryDrawing.Geometry>
+                                    <GeometryGroup>
+                                        <RectangleGeometry Rect="0,0,6,6"/>
+                                        <RectangleGeometry Rect="6,6,6,6"/>
+                                    </GeometryGroup>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Border.BorderBrush>
+            <StackPanel HorizontalAlignment="Center">
+                <Border Width="64" Height="64" CornerRadius="32" Background="{StaticResource AccentSoftBrush}" HorizontalAlignment="Center">
+                    <TextBlock Text="⬆" FontSize="30" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <TextBlock Text="엑셀 파일을 여기로 끌어다 놓으세요" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,16,0,4"/>
+                <TextBlock Text="또는 아래 버튼을 눌러 파일을 고르세요 (.xlsx)" Style="{StaticResource Hint}" HorizontalAlignment="Center"/>
+                <Button Style="{StaticResource PrimaryButton}" Content="엑셀 파일 선택..." HorizontalAlignment="Center" Margin="0,18,0,0" Click="OnBrowse"/>
+                <StackPanel x:Name="RecentPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                    <TextBlock Text="최근 파일:" Style="{StaticResource Hint}" Margin="0,0,10,0"/>
+                    <ItemsControl x:Name="RecentList">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource LinkButton}" Content="{Binding Name}" ToolTip="{Binding Path}" Click="OnRecentClick" FontSize="13"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- ── 파일을 불러온 뒤 ── -->
+        <DockPanel x:Name="LoadedPanel" Visibility="Collapsed">
+            <!-- 불러온 파일 -->
+            <Border DockPanel.Dock="Top" Style="{StaticResource Card}" Padding="14,10">
+                <DockPanel>
+                    <Button DockPanel.Dock="Right" Content="다른 파일 선택" Click="OnBrowse"/>
+                    <Border Width="36" Height="36" CornerRadius="8" Background="{StaticResource SuccessSoftBrush}" Margin="0,0,12,0">
+                        <TextBlock Text="X" FontWeight="Bold" FontSize="16" Foreground="{StaticResource SuccessBrush}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock x:Name="FileNameText" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock x:Name="FilePathText" Style="{StaticResource Hint}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- 요약 숫자 -->
+            <WrapPanel DockPanel.Dock="Top" Margin="0,14,0,0">
+                <Border CornerRadius="8" Background="{StaticResource SuccessSoftBrush}" Padding="16,10" Margin="0,0,10,8">
+                    <StackPanel>
+                        <TextBlock Text="발송 대상" FontSize="12" Foreground="{StaticResource SuccessBrush}"/>
+                        <TextBlock x:Name="TargetCount" FontSize="22" FontWeight="Bold" Foreground="#166534"/>
+                    </StackPanel>
+                </Border>
+                <Border CornerRadius="8" Background="White" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" Padding="16,10" Margin="0,0,10,8">
+                    <StackPanel>
+                        <TextBlock Text="SMS 수신거부" FontSize="12" Foreground="{StaticResource MutedBrush}"/>
+                        <TextBlock x:Name="RefusedCount" FontSize="22" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
+                    </StackPanel>
+                </Border>
+                <Border CornerRadius="8" Background="White" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" Padding="16,10" Margin="0,0,10,8">
+                    <StackPanel>
+                        <TextBlock Text="번호 오류" FontSize="12" Foreground="{StaticResource MutedBrush}"/>
+                        <TextBlock x:Name="InvalidCount" FontSize="22" FontWeight="Bold"/>
+                    </StackPanel>
+                </Border>
+                <Border CornerRadius="8" Background="White" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" Padding="16,10" Margin="0,0,10,8">
+                    <StackPanel>
+                        <TextBlock Text="중복 번호" FontSize="12" Foreground="{StaticResource MutedBrush}"/>
+                        <TextBlock x:Name="DuplicateCount" FontSize="22" FontWeight="Bold"/>
+                    </StackPanel>
+                </Border>
+                <StackPanel VerticalAlignment="Center" Margin="10,0,0,8">
+                    <CheckBox x:Name="IncludeRefusedCheck" Content="수신거부한 사람에게도 보내기" Click="OnIncludeRefusedClick"/>
+                    <TextBlock Style="{StaticResource Hint}" Margin="20,2,0,0" Text="보통은 체크하지 않습니다."/>
+                </StackPanel>
+            </WrapPanel>
+
+            <!-- 컬럼 설정 (자동 감지가 틀렸을 때만) -->
+            <Expander x:Name="MappingExpander" DockPanel.Dock="Top" Margin="0,4,0,10">
+                <Expander.Header>
+                    <TextBlock x:Name="MappingSummary" Foreground="{StaticResource MutedBrush}"/>
+                </Expander.Header>
+                <Border Style="{StaticResource Card}" Margin="0,8,0,0" Padding="14">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource Hint}" Margin="0,0,0,10"
+                                   Text="엑셀의 어느 칸이 이름·전화번호·수신여부인지 자동으로 찾았습니다. 표 내용이 이상하면 여기서 바꿔 주세요."/>
+                        <WrapPanel>
+                            <TextBlock Style="{StaticResource Label}" Text="시트"/>
+                            <ComboBox x:Name="SheetCombo" Width="140" Margin="0,0,18,6" SelectionChanged="OnSheetChanged"/>
+                            <TextBlock Style="{StaticResource Label}" Text="이름"/>
+                            <ComboBox x:Name="NameCombo" Width="160" Margin="0,0,18,6" SelectionChanged="OnMappingChanged"/>
+                            <TextBlock Style="{StaticResource Label}" Text="전화번호"/>
+                            <ComboBox x:Name="PhoneCombo" Width="160" Margin="0,0,18,6" SelectionChanged="OnMappingChanged"/>
+                            <TextBlock Style="{StaticResource Label}" Text="SMS 수신여부"/>
+                            <ComboBox x:Name="SmsCombo" Width="160" Margin="0,0,0,6" SelectionChanged="OnMappingChanged"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+            </Expander>
+
+            <!-- 표 위: 필터 + 도움말 -->
+            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+                <Border CornerRadius="8" Background="#E5E7EB" Padding="3" DockPanel.Dock="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="FilterAll" Style="{StaticResource SegmentButton}" GroupName="Filter" IsChecked="True" Checked="OnFilterChanged"/>
+                        <RadioButton x:Name="FilterTargets" Style="{StaticResource SegmentButton}" GroupName="Filter" Checked="OnFilterChanged"/>
+                        <RadioButton x:Name="FilterExcluded" Style="{StaticResource SegmentButton}" GroupName="Filter" Checked="OnFilterChanged"/>
+                    </StackPanel>
+                </Border>
+                <TextBlock Style="{StaticResource Hint}" VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right"
+                           Text="이름·전화번호를 더블클릭하면 고칠 수 있어요 · 체크를 풀면 발송에서 빠집니다"/>
+            </DockPanel>
+
+            <DataGrid x:Name="RecipientGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                      CellEditEnding="OnCellEditEnding">
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Issue}" Value="InvalidPhone">
+                                <Setter Property="Background" Value="{StaticResource DangerSoftBrush}"/>
+                                <Setter Property="Foreground" Value="#B91C1C"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Issue}" Value="Duplicate">
+                                <Setter Property="Background" Value="{StaticResource DangerSoftBrush}"/>
+                                <Setter Property="Foreground" Value="#B91C1C"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Issue}" Value="SmsRefused">
+                                <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+                                <Setter Property="Foreground" Value="#9CA3AF"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="보내기" Width="60">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Include, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          IsEnabled="{Binding CanSend}" Click="OnIncludeClick"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="엑셀 행" Binding="{Binding RowNumber}" IsReadOnly="True" Width="64"/>
+                    <DataGridTextColumn Header="이름 ✎" Binding="{Binding Name}" Width="130"/>
+                    <DataGridTextColumn Header="전화번호 ✎" Binding="{Binding Phone}" Width="160"/>
+                    <DataGridTextColumn Header="SMS 수신" Binding="{Binding SmsValue}" IsReadOnly="True" Width="84"/>
+                    <DataGridTextColumn Header="안내" Binding="{Binding Reason}" IsReadOnly="True" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </DockPanel>
+
+    <!-- 엑셀을 읽는 동안 화면 전체를 덮는 로딩 표시 -->
+    <Border x:Name="LoadingOverlay" Background="#D9F3F4F6" Visibility="Collapsed">
+        <Border Style="{StaticResource Card}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="40,28">
+            <StackPanel>
+                <Grid Width="52" Height="52" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform x:Name="SpinnerRotate"/>
+                    </Grid.RenderTransform>
+                    <Ellipse Stroke="{StaticResource LineBrush}" StrokeThickness="5"/>
+                    <Ellipse Stroke="{StaticResource AccentBrush}" StrokeThickness="5" StrokeDashArray="8 100" StrokeDashCap="Round"/>
+                </Grid>
+                <TextBlock Text="엑셀 파일을 읽는 중입니다" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,18,0,4"/>
+                <TextBlock x:Name="LoadingFileText" Style="{StaticResource Hint}" HorizontalAlignment="Center" TextAlignment="Center" MaxWidth="360"/>
+                <TextBlock Style="{StaticResource Hint}" HorizontalAlignment="Center" Margin="0,8,0,0"
+                           Text="명단이 크면 몇 초 걸릴 수 있습니다."/>
+            </StackPanel>
+        </Border>
+    </Border>
+  </Grid>
+</UserControl>
