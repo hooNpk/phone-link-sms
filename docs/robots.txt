@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hoonpk.github.io/phone-link-sms/sitemap.xml

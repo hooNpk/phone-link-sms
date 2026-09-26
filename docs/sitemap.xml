@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://hoonpk.github.io/phone-link-sms/</loc>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image><image:loc>https://hoonpk.github.io/phone-link-sms/img/og.png</image:loc></image:image>
+    <image:image><image:loc>https://hoonpk.github.io/phone-link-sms/img/step1.png</image:loc></image:image>
+    <image:image><image:loc>https://hoonpk.github.io/phone-link-sms/img/step2.png</image:loc></image:image>
+    <image:image><image:loc>https://hoonpk.github.io/phone-link-sms/img/step4.png</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://hoonpk.github.io/phone-link-sms/llms.txt</loc>
+    <lastmod>2026-09-26</lastmod>
+    <priority>0.5</priority>
+  </url>
+</urlset>
