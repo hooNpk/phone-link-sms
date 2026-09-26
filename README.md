@@ -4,7 +4,7 @@
 Windows 기본 앱인 '휴대폰과 연결(Phone Link)'을 UI 자동화로 조작해 보냅니다.
 
 - **소개 페이지:** https://hoonpk.github.io/phone-link-sms/
-- **다운로드:** [최신 릴리스](https://github.com/hooNpk/phone-link-sms/releases/latest) — `단체문자발송.exe` 하나만 받아 실행하면 됩니다 (설치 불필요)
+- **다운로드:** [최신 릴리스](https://github.com/hooNpk/phone-link-sms/releases/latest) — `GroupSMS.exe` 하나만 받아 실행하면 됩니다 (설치 불필요)
 
 ## 특징
 
