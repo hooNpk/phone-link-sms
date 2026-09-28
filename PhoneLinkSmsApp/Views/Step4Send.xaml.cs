@@ -19,7 +19,6 @@ public partial class Step4Send : UserControl, IStepView
     SendWorker? _worker;
     SendLogger? _logger;
     bool _paused;
-    bool _donationDismissed;
     int _doneThisRun;
 
     public Step4Send(MainWindow main)
@@ -191,11 +190,6 @@ public partial class Step4Send : UserControl, IStepView
         if (pending.Count > 0) ResumeButton.Content = $"{pending[0].SendIndex}번부터 재개";
         RetryButton.Visibility = failed > 0 ? Visibility.Visible : Visibility.Collapsed;
 
-        // 실제로 보낸 사람이 있을 때만, 이번 실행에서 '다음에 할게요'를 누르지 않았다면 후원을 안내한다
-        bool askDonation = sent > 0 && AppLinks.HasDonation && !_donationDismissed;
-        DonationCard.Visibility = askDonation ? Visibility.Visible : Visibility.Collapsed;
-        if (askDonation) DonationTitle.Text = $"방금 {sent}명에게 문자를 보냈습니다. 단체문자발송이 도움이 되셨나요?";
-
         AppendLog($"{title} — {DescText.Text}");
         if (result.AbortReason != null) AppendLog("원인: " + result.AbortReason);
         UpdateProgress(0);
@@ -263,22 +257,4 @@ public partial class Step4Send : UserControl, IStepView
     void OnRetryFailed(object sender, RoutedEventArgs e) => Start(SendMode.RetryFailed);
 
     void OnOpenLogFolder(object sender, RoutedEventArgs e) => MainWindow.OpenLogFolder(_logger?.Folder);
-
-    void OnDonate(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            Process.Start(new ProcessStartInfo(AppLinks.DonationUrl) { UseShellExecute = true });
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"후원 페이지를 열지 못했습니다.\n{AppLinks.DonationUrl}\n\n{ex.Message}", "후원하기", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-    }
-
-    void OnDismissDonation(object sender, RoutedEventArgs e)
-    {
-        _donationDismissed = true;
-        DonationCard.Visibility = Visibility.Collapsed;
-    }
 }

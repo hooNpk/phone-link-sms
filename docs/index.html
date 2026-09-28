@@ -315,27 +315,6 @@
   footer { border-top: 1px solid var(--line); padding: 32px 0 calc(32px + env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: 14px; text-align: center; }
   footer p { margin: 4px 0; }
 
-  /* 후원 */
-  .support { background: linear-gradient(135deg, #fdf2f8, #fff 60%); border: 1px solid #fbcfe8; border-radius: 24px; padding: 40px 36px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 36px; align-items: center; }
-  @media (max-width: 860px) { .support { grid-template-columns: minmax(0, 1fr); padding: 28px 20px; gap: 22px; } }
-  .support h2 { font-size: clamp(24px, 3.6vw, 32px); margin: 0 0 12px; }
-  .support h2 .heart { color: #db2777; }
-  .support p { color: #374151; margin: 0 0 14px; }
-  .support ul { margin: 0; padding: 0; list-style: none; }
-  .support li { display: flex; gap: 10px; margin: 8px 0; color: #374151; }
-  .support li b { color: #9d174d; }
-  .give { background: #fff; border: 1px solid #fbcfe8; border-radius: 18px; padding: 22px; }
-  .give .label { font-weight: 700; margin-bottom: 12px; }
-  .amounts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-  .amount { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 14px 6px; border: 1.5px solid #fbcfe8; border-radius: 14px; text-decoration: none; color: #831843; font-weight: 800; font-size: 18px; min-height: 44px; transition: background .15s, border-color .15s; }
-  .amount small { font-weight: 600; font-size: 12px; color: #be185d; }
-  .amount:hover { background: #fdf2f8; border-color: #db2777; }
-  .amount.pick { border-color: #db2777; background: #fdf2f8; position: relative; }
-  .amount.pick::after { content: "추천"; position: absolute; top: -10px; background: #db2777; color: #fff; font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 999px; }
-  .give .btn-donate { width: 100%; margin-top: 12px; background: #db2777; color: #fff; }
-  .give .btn-donate:hover { background: #be185d; }
-  .give .note { font-size: 13px; color: var(--muted); margin-top: 10px; text-align: center; }
-
   /* ── 모바일 전용: 하단 고정 버튼, 알림, 확대 보기 ── */
   .mobile-bar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: none;
@@ -408,7 +387,6 @@
       <a class="hide-sm" href="#privacy">개인정보</a>
       <a class="hide-sm" href="#compare">비교</a>
       <a class="hide-sm" href="#how">사용 방법</a>
-      <a class="hide-sm js-support-link" href="#support" hidden>후원</a>
       <a class="btn btn-primary btn-sm only-desktop" href="#download">다운로드</a>
       <button type="button" class="btn btn-primary btn-sm only-mobile js-share">PC로 링크 보내기</button>
     </nav>
@@ -699,39 +677,12 @@
     </details>
   </div>
 </section>
-
-<!-- ── 후원 (DONATION_URL을 채우면 보인다) ── -->
-<section id="support" class="alt" aria-labelledby="support-title" hidden>
-  <div class="wrap">
-    <div class="support">
-      <div>
-        <h2 id="support-title"><span class="heart">♥</span> 단체문자발송은 후원으로 유지됩니다</h2>
-        <p>광고도, 유료 기능도 없습니다. 대신 Windows '휴대폰과 연결' 앱이 업데이트될 때마다 프로그램도 함께 고쳐야 합니다. 지속적인 프로그램 유지관리를 위해 후원을 부탁드립니다.</p>
-        <ul>
-          <li><span>🛠️</span><span><b>업데이트 대응</b> — '휴대폰과 연결'이 바뀌어도 계속 보낼 수 있도록</span></li>
-          <li><span>🔏</span><span><b>코드 서명 인증서</b> — 처음 실행할 때 뜨는 '알 수 없는 게시자' 경고 없애기</span></li>
-          <li><span>✨</span><span><b>기능 개선</b> — 예약 발송 등 요청이 많은 기능 추가</span></li>
-        </ul>
-      </div>
-      <div class="give">
-        <div class="label">원하는 만큼 후원하기</div>
-        <div class="amounts">
-          <a class="amount js-amount" data-amount="3000" href="#" target="_blank" rel="noopener">3,000원<small>커피 한 잔</small></a>
-          <a class="amount js-amount pick" data-amount="5000" href="#" target="_blank" rel="noopener">5,000원<small>조금 더 응원</small></a>
-          <a class="amount js-amount" data-amount="10000" href="#" target="_blank" rel="noopener">10,000원<small>든든한 응원</small></a>
-        </div>
-        <a class="btn btn-donate js-donate" href="#" target="_blank" rel="noopener">♥&nbsp; 금액 직접 정해서 후원하기</a>
-        <div class="note">토스 송금으로 안전하게 보내집니다 · 부담 없이 원하는 만큼만</div>
-      </div>
-    </div>
-  </div>
-</section>
 </main>
 
 <footer>
   <div class="wrap">
     <p><b>단체문자발송</b> v1.2.0 · 2026년 9월 업데이트 · 무료 Windows 프로그램</p>
-    <p>소스 코드: <a href="https://github.com/hooNpk/phone-link-sms">github.com/hooNpk/phone-link-sms</a> · <a href="llms.txt">AI용 요약(llms.txt)</a><span class="js-support-link" hidden> · <a href="#support">♥ 후원하기</a></span></p>
+    <p>소스 코드: <a href="https://github.com/hooNpk/phone-link-sms">github.com/hooNpk/phone-link-sms</a> · <a href="llms.txt">AI용 요약(llms.txt)</a></p>
   </div>
 </footer>
 
@@ -752,19 +703,6 @@
 <script>
 (function () {
   var PAGE_URL = "https://hoonpk.github.io/phone-link-sms/";
-  // 후원 링크 (예: "https://toss.me/아이디"). 비워 두면 후원 섹션·메뉴가 숨겨진다.
-  var DONATION_URL = "";
-
-  if (/^https:\/\//.test(DONATION_URL)) {
-    document.getElementById("support").hidden = false;
-    document.querySelectorAll(".js-support-link").forEach(function (el) { el.hidden = false; });
-    document.querySelectorAll(".js-donate").forEach(function (a) { a.href = DONATION_URL; });
-    // 토스 송금 링크는 주소 뒤에 금액을 붙이면 그 금액이 미리 채워진다 (toss.me/아이디/5000)
-    var isToss = /^https:\/\/toss\.me\//.test(DONATION_URL);
-    document.querySelectorAll(".js-amount").forEach(function (a) {
-      a.href = isToss ? DONATION_URL.replace(/\/$/, "") + "/" + a.dataset.amount : DONATION_URL;
-    });
-  }
   var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
     || (matchMedia("(pointer: coarse)").matches && innerWidth < 900);
   if (isMobile) document.body.classList.add("is-mobile");
